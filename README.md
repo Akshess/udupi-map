@@ -1,4 +1,4 @@
-# 🌴 UdupiWalk
+# 🌴 GoUdupi
 
 > A modern, community-driven guide to Udupi built with Next.js and TypeScript.
 
