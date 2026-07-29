@@ -5,7 +5,7 @@ import { GeoJSON, MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import type { FeatureCollection, Feature, MultiPolygon } from "geojson";
-import type { TalukProperties } from "@/types/taluka";
+import type { TalukProperties } from "@/features/maps/types/taluka";
 
 export default function UdupiMap() {
   const [geoData, setGeoData] = useState<
