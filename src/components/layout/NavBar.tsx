@@ -46,7 +46,7 @@ function MobileNavItem({ item, depth = 0, onClose }: { item: NavbarItem; depth?:
       <Link
         href={item.href!}
         onClick={onClose}
-        className="block py-2.5 text-sm text-gray-700 hover:text-teal-800 transition-colors"
+        className="block py-2.5 text-sm text-white-700 hover:text-teal-800 transition-colors"
         style={{ paddingLeft: `${depth * 16 + 16}px` }}
       >
         {item.label}
