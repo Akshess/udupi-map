@@ -1,4 +1,4 @@
-import { UdupiEvent } from "@/types/event";
+import { UdupiEvent } from "./types/event";
 
 export const events: UdupiEvent[] = [
   {
