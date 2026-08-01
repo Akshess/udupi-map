@@ -19,7 +19,18 @@ interface NavbarProps {
 
 const defaultLinks: NavbarItem[] = [
   { label: "Home", href: "/" },
-  { label: "Story", href: "/story" },
+  { label: "Story", children: [
+          {
+            label: "Our Story",
+            href: "/stories/our-story",
+          },
+          {
+            label: "Your Story",
+            href: "/stories/your-story",
+          },
+        ]
+      },
+  { label: "Events", href: "/events" },
   {
     label: "My City",
     children: [
