@@ -1,10 +1,21 @@
 "use client";
-
 import { useState, useMemo } from "react";
+import dynamic from "next/dynamic";
 import { udupiPanchayats } from "@/features/gram-panchayat/data/panchayats";
 import PanchayatCard from "@/features/gram-panchayat/components/PanchayatCard";
 import PanchayatFilters from "@/features/gram-panchayat/components/PanchayatFilters";
-import { TALUKS_WITH_ALL, TalukFilter } from "@/features/gram-panchayat/data/talukas";
+import { TalukFilter } from "@/features/gram-panchayat/data/talukas";
+
+// Must be dynamically imported with ssr: false — Leaflet breaks on the server
+const PanchayatMap = dynamic(
+  () => import("@/features/gram-panchayat/components/PanchayatMap"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="mb-8 h-[500px] w-full animate-pulse rounded-xl bg-gray-100" />
+    ),
+  }
+);
 
 export default function PanchayatsPage() {
   const [search, setSearch] = useState("");
@@ -29,6 +40,12 @@ export default function PanchayatsPage() {
           Udupi district — sourced from the eGramSwaraj portal.
         </p>
       </div>
+
+      {/* Map section */}
+      <section className="mb-8">
+        <h2 className="mb-3 text-lg font-semibold text-gray-900">Map View</h2>
+        <PanchayatMap />
+      </section>
 
       <PanchayatFilters
         search={search}
