@@ -17,17 +17,13 @@ interface NavbarProps {
 
 const defaultLinks: NavbarItem[] = [
   { label: "Home", href: "/" },
-  { label: "Story", children: [
-          {
-            label: "Our Story",
-            href: "/stories/our-story",
-          },
-          {
-            label: "Your Story",
-            href: "/stories/your-story",
-          },
-        ]
-      },
+  {
+    label: "Story",
+    children: [
+      { label: "Our Story", href: "/stories/our-story" },
+      { label: "Your Story", href: "/stories/your-story" },
+    ],
+  },
   { label: "Events", href: "/events" },
   {
     label: "My City",
@@ -37,7 +33,7 @@ const defaultLinks: NavbarItem[] = [
         children: [
           { label: "Talukas", href: "/my-city/Administrative/talukas" },
           { label: "Wards", href: "/my-city/Administrative/wards" },
-          { label: "Panchayats", href: "/my-city/Administrative/panchayats" },
+          { label: "Gram Panchayats", href: "/my-city/Administrative/gram-panchayats" }, // ✅ Fixed
           { label: "Municipalities", href: "/my-city/Administrative/municipalities" },
         ],
       },
