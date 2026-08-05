@@ -1,7 +1,9 @@
+import { TALUKS_WITH_ALL } from "@/features/gram-panchayat/data/talukas";
+
 // Static reference info for a Gram Panchayat (from LGD Directory)
 export interface Panchayat {
   name: string;
-  taluk: "Udupi" | "Karkala" | "Kundapura"| "Byndoor" | "Kaup"|"Brahmavar";
+  taluk: typeof TALUKS_WITH_ALL[number];
   lgdCode: number;
 }
 
