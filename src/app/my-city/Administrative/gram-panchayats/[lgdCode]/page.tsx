@@ -15,7 +15,12 @@ const CURRENT_PLAN_YEAR = 2023; // FY 2023-24
 export default async function PanchayatDetailPage({
   params,
 }: {
-  params: { lgdCode: string };
+  params: Promise<{ lgdCode: string }>;
+}) {
+  const { lgdCode: lgdCodeStr } = await params;
+  const lgdCode = Number(lgdCodeStr);
+
+  if (isNaN(lgdCode)) notFound();
 }) {
   const lgdCode = Number(params.lgdCode);
   const panchayat = udupiPanchayats.find((gp) => gp.lgdCode === lgdCode);
