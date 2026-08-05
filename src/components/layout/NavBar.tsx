@@ -47,7 +47,7 @@ const defaultLinks: NavbarItem[] = [
           },
           {
             label: "Panchayats",
-            href: "/my-city/Administrative/panchayats",
+            href: "/my-city/Administrative/gram-panchayats",
           },
           {
             label: "Municipalities",
