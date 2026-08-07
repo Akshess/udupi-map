@@ -1,6 +1,6 @@
 import Link from "next/link";
 import EventCard from "@/features/events/EventCard";
-import { events } from "./data/events";
+import { events } from "@/features/events/data/events";
 import { CATEGORY_LABELS, CATEGORY_ICONS } from "@/features/events/types/event";
 
 export default function EventsPage() {
