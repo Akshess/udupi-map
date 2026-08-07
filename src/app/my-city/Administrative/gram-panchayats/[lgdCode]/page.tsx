@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { udupiPanchayats } from "@/features/gram-panchayat/data/panchayats";
 import {
   getActivities,
@@ -21,9 +22,10 @@ export default async function PanchayatDetailPage({
   const lgdCode = Number(lgdCodeStr);
 
   if (isNaN(lgdCode)) notFound();
-}) {
-  const lgdCode = Number(params.lgdCode);
+
   const panchayat = udupiPanchayats.find((gp) => gp.lgdCode === lgdCode);
+
+  if (!panchayat) notFound();
 
   const [activitiesResult, budgetResult, progressResult] = await Promise.allSettled([
     getActivities(lgdCode, CURRENT_PLAN_YEAR),
@@ -49,10 +51,10 @@ export default async function PanchayatDetailPage({
 
       <div className="mb-8">
         <h1 className="text-2xl font-semibold text-gray-900 md:text-3xl">
-          {panchayat?.name ?? `Panchayat ${lgdCode}`}
+          {panchayat.name}
         </h1>
         <p className="mt-1 text-sm text-gray-600">
-          {panchayat?.taluk ?? "Udupi"} taluk · LGD Code {lgdCode} · FY {CURRENT_PLAN_YEAR}-
+          {panchayat.taluk} taluk · LGD Code {lgdCode} · FY {CURRENT_PLAN_YEAR}-
           {(CURRENT_PLAN_YEAR + 1).toString().slice(-2)}
         </p>
       </div>
