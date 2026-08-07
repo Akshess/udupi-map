@@ -204,7 +204,7 @@ const Navbar: React.FC<NavbarProps> = ({ items = defaultLinks }) => {
         {/* Logo */}
         <Link href="/" className="flex shrink-0 items-center">
           <Image
-            src="/title_logo.png"
+            src="/images/title_logo.png"
             alt="Go Udupi"
             width={120}
             height={40}

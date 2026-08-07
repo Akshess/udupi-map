@@ -44,7 +44,90 @@ export default function YourStory() {
       </p>
 
       <form onSubmit={handleSubmit} className="mt-10 space-y-6 rounded-2xl border bg-white p-8 shadow">
-        {/* title, category, ward, story textarea, optional photo, submit button */}
+        {/* Title */}
+        <div>
+          <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+            Story title
+          </label>
+          <input
+            id="title"
+            name="title"
+            type="text"
+            required
+            placeholder="e.g. The chai stall that never closed"
+            className="mt-1.5 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-700 outline-none focus:border-teal-300"
+          />
+        </div>
+
+        {/* Category */}
+        <div>
+          <span className="block text-sm font-medium text-gray-700 mb-2">Category</span>
+          <div className="flex flex-wrap gap-2">
+            {STORY_CATEGORIES.map((cat) => (
+              <label
+                key={cat.value}
+                className="flex cursor-pointer items-center gap-1.5 rounded-full border border-gray-200 px-3 py-1.5 text-sm text-gray-700 has-[:checked]:border-teal-400 has-[:checked]:bg-teal-50 has-[:checked]:text-teal-800"
+              >
+                <input type="radio" name="category" value={cat.value} className="sr-only" required />
+                {cat.label}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Ward */}
+        <div>
+          <label htmlFor="ward" className="block text-sm font-medium text-gray-700">
+            Ward / neighbourhood
+          </label>
+          <select
+            id="ward"
+            name="ward"
+            required
+            className="mt-1.5 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-700 outline-none focus:border-teal-300"
+          >
+            <option value="">Select a ward…</option>
+            {WARDS.map((w) => (
+              <option key={w} value={w}>{w}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Story */}
+        <div>
+          <label htmlFor="story" className="block text-sm font-medium text-gray-700">
+            Your story
+          </label>
+          <textarea
+            id="story"
+            name="story"
+            required
+            rows={6}
+            placeholder="Write in any language — Kannada, Tulu, English, or a mix…"
+            className="mt-1.5 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-700 outline-none focus:border-teal-300"
+          />
+        </div>
+
+        {/* Optional photo */}
+        <div>
+          <label htmlFor="photo" className="block text-sm font-medium text-gray-700">
+            Photo <span className="text-gray-400">(optional)</span>
+          </label>
+          <input
+            id="photo"
+            name="photo"
+            type="file"
+            accept="image/*"
+            className="mt-1.5 w-full text-sm text-gray-600 file:mr-4 file:rounded-lg file:border-0 file:bg-teal-50 file:px-4 file:py-2 file:text-sm file:font-medium file:text-teal-800 hover:file:bg-teal-100"
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full rounded-xl bg-teal-800 px-6 py-3 font-semibold text-white transition-colors hover:bg-teal-900"
+        >
+          Submit story
+        </button>
       </form>
     </main>
   );
