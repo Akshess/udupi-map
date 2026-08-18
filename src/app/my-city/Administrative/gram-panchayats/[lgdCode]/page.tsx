@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { udupiPanchayats } from "@/features/gram-panchayat/data/panchayats";
+import { getPanchayatDashboard } from "@/features/gram-panchayat/services/panchayat.services";
 import {
-  getActivities,
-  getResourceEnvelope,
-  getPhysicalProgress,
-} from "@/features/gram-panchayat/services/panchayat.services";
-import { Activity, ResourceAllocation, PhysicalProgress } from "@/features/gram-panchayat/types/panchayat";
+  Activity,
+  ResourceAllocation,
+  PhysicalProgress,
+} from "@/features/gram-panchayat/types/panchayat";
 import ActivitiesTable from "@/features/gram-panchayat/components/ActivitiesTable";
 import BudgetTable from "@/features/gram-panchayat/components/BudgetTable";
 import ProgressTable from "@/features/gram-panchayat/components/ProgressTable";
@@ -27,18 +27,16 @@ export default async function PanchayatDetailPage({
 
   if (!panchayat) notFound();
 
-  const [activitiesResult, budgetResult, progressResult] = await Promise.allSettled([
-    getActivities(lgdCode, CURRENT_PLAN_YEAR),
-    getResourceEnvelope(lgdCode, CURRENT_PLAN_YEAR),
-    getPhysicalProgress(lgdCode, CURRENT_PLAN_YEAR),
-  ]);
+  const dashboard = await getPanchayatDashboard(
+    lgdCode,
+    CURRENT_PLAN_YEAR,
+  ).catch(() => ({
+    activities: [] as Activity[],
+    resources: [] as ResourceAllocation[],
+    progress: [] as PhysicalProgress[],
+  }));
 
-  const activities: Activity[] =
-    activitiesResult.status === "fulfilled" ? (activitiesResult.value as Activity[]) : [];
-  const budget: ResourceAllocation[] =
-    budgetResult.status === "fulfilled" ? (budgetResult.value as ResourceAllocation[]) : [];
-  const progress: PhysicalProgress[] =
-    progressResult.status === "fulfilled" ? (progressResult.value as PhysicalProgress[]) : [];
+  const { activities, resources: budget, progress } = dashboard;
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-10 md:px-6">
