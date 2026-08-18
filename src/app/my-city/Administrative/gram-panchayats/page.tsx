@@ -1,10 +1,9 @@
 "use client";
-import { useState, useMemo } from "react";
+
+import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import { udupiPanchayats } from "@/features/gram-panchayat/data/panchayats";
-import PanchayatCard from "@/features/gram-panchayat/components/PanchayatCard";
-import PanchayatFilters from "@/features/gram-panchayat/components/PanchayatFilters";
-import { TalukFilter } from "@/features/gram-panchayat/data/talukas";
 
 // Must be dynamically imported with ssr: false — Leaflet breaks on the server
 const PanchayatMap = dynamic(
@@ -14,20 +13,21 @@ const PanchayatMap = dynamic(
     loading: () => (
       <div className="mb-8 h-[500px] w-full animate-pulse rounded-xl bg-gray-100" />
     ),
-  }
+  },
 );
 
 export default function PanchayatsPage() {
+  const router = useRouter();
   const [search, setSearch] = useState("");
-  const [taluk, setTaluk] = useState<TalukFilter>("All");
 
-  const filtered = useMemo(() => {
-    return udupiPanchayats.filter((gp) => {
-      const matchesTaluk = taluk === "All" || gp.taluk === taluk;
-      const matchesSearch = gp.name.toLowerCase().includes(search.toLowerCase());
-      return matchesTaluk && matchesSearch;
-    });
-  }, [search, taluk]);
+  const matches = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    if (!query) return [];
+
+    return udupiPanchayats
+      .filter((gp) => gp.name.toLowerCase().includes(query))
+      .slice(0, 8);
+  }, [search]);
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-10 md:px-6">
@@ -36,35 +36,58 @@ export default function PanchayatsPage() {
           Gram Panchayats
         </h1>
         <p className="mt-2 text-sm text-gray-600">
-          Browse planning, budget, and progress data for Gram Panchayats across
-          Udupi district — sourced from the eGramSwaraj portal.
+          Select a panchayat on the map, or search by name to view its planning,
+          budget, and progress data.
         </p>
       </div>
 
-      {/* Map section */}
       <section className="mb-8">
+        <label
+          className="mb-2 block text-sm font-medium text-gray-700"
+          htmlFor="panchayat-search"
+        >
+          Search a Gram Panchayat
+        </label>
+        <input
+          id="panchayat-search"
+          type="search"
+          placeholder="Start typing a panchayat name..."
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+          className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-700 outline-none transition-colors focus:border-teal-500 focus:ring-2 focus:ring-teal-100 sm:max-w-lg"
+        />
+
+        {search.trim() && (
+          <div className="mt-2 max-w-lg overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+            {matches.length > 0 ? (
+              matches.map((gp) => (
+                <button
+                  className="flex w-full items-center justify-between border-b border-gray-100 px-4 py-3 text-left text-sm last:border-b-0 hover:bg-teal-50"
+                  key={gp.lgdCode}
+                  onClick={() =>
+                    router.push(
+                      `/my-city/Administrative/gram-panchayats/${gp.lgdCode}`,
+                    )
+                  }
+                  type="button"
+                >
+                  <span className="font-medium text-gray-900">{gp.name}</span>
+                  <span className="text-xs text-gray-500">{gp.taluk}</span>
+                </button>
+              ))
+            ) : (
+              <p className="px-4 py-3 text-sm text-gray-500">
+                No panchayats match “{search.trim()}”.
+              </p>
+            )}
+          </div>
+        )}
+      </section>
+
+      <section>
         <h2 className="mb-3 text-lg font-semibold text-gray-900">Map View</h2>
         <PanchayatMap />
       </section>
-
-      <PanchayatFilters
-        search={search}
-        onSearchChange={setSearch}
-        taluk={taluk}
-        onTalukChange={setTaluk}
-      />
-
-      {filtered.length === 0 ? (
-        <p className="py-12 text-center text-sm text-gray-500">
-          No panchayats match your search.
-        </p>
-      ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((gp) => (
-            <PanchayatCard key={gp.lgdCode} panchayat={gp} />
-          ))}
-        </div>
-      )}
     </main>
   );
 }
